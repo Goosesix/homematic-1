@@ -4,7 +4,7 @@
 !
 !----- User setable variables
 
-string  language    = "de";     ! either "en" for english or "de" for german;
+string  language    = "en";     ! either "en" for english or "de" for german;
 boolean debug       = false;
 
 !------ Execution
@@ -20,7 +20,7 @@ string  devicetypes         = ",";
 string  devicesconcat;
 
 string  deviceid;
-foreach(deviceid, dom.GetObject(ID_DEVICES).EnumUsedIDs()) 
+foreach(deviceid, dom.GetObject(ID_DEVICES).EnumUsedIDs())
 {
     var     device      = dom.GetObject(deviceid);                                              if(debug){WriteLine("Device:"#device#" (id:"#deviceid#")");}
     string  devicetype  = device.HSSID();                                                       if(debug){WriteLine("Devicetype:"#devicetype);}
@@ -34,7 +34,7 @@ foreach(deviceid, dom.GetObject(ID_DEVICES).EnumUsedIDs())
         devicetypecount = devicetypecount + 1;
     }
 
-    string channelid;                                                                                                           
+    string channelid;
     foreach(channelid,device.Channels().EnumUsedIDs())
     {                                                                                           if(debug){var channel = dom.GetObject(channelid);WriteLine("\t Channel:"#channel#" (id:"#channelid#")");}
         channelcount    = channelcount + 1;
@@ -68,7 +68,7 @@ foreach(devicetype,devicetypes.Split(","))
     if( devicetype.Length() )
     {                                                                                           if(debug){WriteLine("Device:"#devicetype);}
         devicecounter = 0;
-        
+
         string counttype;
         foreach(counttype,devicesconcat)
         {
@@ -80,17 +80,17 @@ foreach(devicetype,devicetypes.Split(","))
 
         string  originaldevicetype = devicetype;
         boolean foundnicename=false;
-        
+
         while( !foundnicename && devicetype.Length()>6 )
-        {           
-            string  nicename;                                                               
+        {
+            string  nicename;
             integer devicenameposition   = typenames.Find(devicetype#",");                      if(debug){WriteLine("Searching nicename for:"#devicetype);}
 
             if( -1 != devicenameposition )
-            {                                                                                   
+            {
                 integer     length          = devicetype.Length();
                 string      remainingstring = typenames.Substr(devicenameposition,length-devicenameposition);
-                
+
                 nicename    = "(" # remainingstring.StrValueByIndex(",",1) # ")";
                 foundnicename = true;
             }
@@ -99,7 +99,7 @@ foreach(devicetype,devicetypes.Split(","))
                 devicetype = devicetype.Substr(0,devicetype.Length()-1);
             }
         }
-        
+
         outputstring = outputstring # devicecounter # "x " # originaldevicetype # nicename # ", ";
     }
 }
